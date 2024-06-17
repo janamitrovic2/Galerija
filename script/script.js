@@ -2,6 +2,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const dropZone = document.getElementById('drop-zone');
     const preview = document.getElementById('preview');
     const dropZoneText = dropZone.querySelector('span');
+    const upozorenja = document.getElementById('upozorenja');
+    const reset = document.getElementById('reset');
+
+    reset.addEventListener('click', () => {
+        upozorenja.innerHTML="";
+    });
+    
+    const fileInput = document.getElementById('slika');
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0]; // Uzmi samo prvi fajl
+        handleFile(file);
+    });
 
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -14,8 +26,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
         e.stopPropagation();
         dropZone.classList.remove('dragover');
-        dropZoneText.textContent = 'Prevucite fajl ovde';
+        dropZoneText.textContent = '... ili prevucite fajl ovde';
     });
+
 
     dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
@@ -25,28 +38,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         const files = e.dataTransfer.files;
         if (files.length > 0) {
-            handleFiles(files);
+            const file = files[0]; // Uzmi samo prvi fajl
+            handleFile(file);
         }
     });
+    
 
-    function handleFiles(files) {
-        const validExtensions = ['image/jpeg', 'image/png', 'image/tiff'];
-        preview.innerHTML = '';
-        let validFiles = 0;
 
-        const file = files;
-        if (validExtensions.includes(file.type)) {
-            validFiles++;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                preview.appendChild(img);
-            };
+    // NISTA DOLE NE RADI
+
+    
+
+    function handleFile(file) {
+        const validExtensions = ['image/jpeg', 'image/png', 'image/jpg', 'image/tiff'];
+        preview.innerHTML = ''; // Očisti prethodni prikaz ako postoji
+    
+        if (validExtensions.includes(file.type)) 
+        {
+
+            if(file.size<=5-1024*1024)
+            {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'img-fluid'; 
+                    preview.appendChild(img);
+                }
             reader.readAsDataURL(file);
-        }
-        if (validFiles <= 0) {
-            dropZoneText.textContent = 'Nema validnih fajlova, prihvatamo samo JPG, JPEG, PNG, ili TIFF fajlove';
+            
+            }
+            else
+            {
+                dropZoneText.textContent = 'Slika prelazi 5MB.';
+            }
+            
+        } 
+        else {
+            dropZoneText.textContent = 'Slika nije jpg/jpeg/png/gif formata.';
         }
     }
+
+    
 });

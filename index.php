@@ -1,15 +1,15 @@
 <?php
 
     $target_dir="uploads/";
-    if(!file_exists($target_dir)){
-        mkdir($target_dir,0777);
+    if(!is_dir($target_dir)){
+        mkdir($target_dir,0777,true);
     }
     ## ukoliko ne postoji folder napravi ga
-                            ## files["name"]["name"] vraca puno ime fajla
-                            // echo(($_FILES["slika"]["name"]))."<br>"; opravdanje.jpg
-                            // echo(basename($_FILES["slika"]["name"]))."<br>"; opradanje.jpg
-                            // echo($target_file)."<br>";
-                            // echo($imageFileType); jpg
+    ## files["name"]["name"] vraca puno ime fajla
+    // echo(($_FILES["slika"]["name"]))."<br>"; opravdanje.jpg
+    // echo(basename($_FILES["slika"]["name"]))."<br>"; opradanje.jpg
+    // echo($target_file)."<br>";
+    // echo($imageFileType); jpg
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +23,8 @@
 </head>
 <body>
     <div>
+
+
         <!-- HERO -->
         <div class="container-fluid bg-primary text-center text-light p-5">
 
@@ -44,6 +46,8 @@
             </div>
 
         </div>
+
+
 
         <!-- BODY -->
         <div class="container-sm my-5 py-5 border">
@@ -80,64 +84,72 @@
                                 <button type="submit" name="btnSubmit" class="btn btn-primary">Submit</button>
                             </div>
                             <div class="col-sm">
-                                <button type="reset" name="btnReset" class="btn btn-light">Reset</button>
+                                <button type="reset" id="reset" name="btnReset" class="btn btn-light">Reset</button>
                             </div>
                         </div>
 
                     </form>
                 </div>
 
-                <div class="">
+                <div class="" id="upozorenja">
 
                     <?php
                     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["btnSubmit"])) 
                     {
                         if(isset($_POST["naziv"]) && htmlspecialchars($_POST["naziv"]!=""))
                         {
-
-
-                            $ime= $_POST['naziv']; // uzima ime iz text box
-                            $_FILES['slika']['name']=$ime.'.'.strtolower(pathinfo($_FILES['slika']['name'], PATHINFO_EXTENSION)); //promena imena slike
-                            $target_file = $target_dir.basename($_FILES["slika"]["name"]); # puna putanja do uploadovanog fajla
-                            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION)); #ekstenzija tipa - jpg
-                            $uploadOk = 1;
-
-
-                            // da li postoji slika
-                            if (file_exists($target_file)) {
-                                echo "<div class='alert alert-danger'>Fajl s s istim imenom vec postoji.</div>";
-                                $uploadOk = 0;
-                            }
-
-                            // provera da li je slika, da li prelazi 5MB i da li je zeljenog formata pristupom preko $_FILES['slika']
-                            $check = getimagesize($_FILES["slika"]["tmp_name"]);
-                            if ($check !== false) 
+                            
+                            if(isset($_FILES['slika']) && $_FILES["slika"]["error"] == UPLOAD_ERR_OK)
                             {
-                                if ($_FILES["slika"]["size"] > 5000000) 
-                                {
-                                    echo "<div class='alert alert-danger'>Slika prelazi 5MB.</div>";
+                                $ime= $_POST['naziv']; // uzima ime iz text box
+                                $_FILES['slika']['name']=$ime.'.'.strtolower(pathinfo($_FILES['slika']['name'], PATHINFO_EXTENSION)); //promena imena slike
+                                $target_file = $target_dir.basename($_FILES["slika"]["name"]); # puna putanja do uploadovanog fajla
+                                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION)); #ekstenzija tipa - jpg
+                                $uploadOk = 1;
+
+
+                                // da li postoji slika
+                                if (file_exists($target_file)) {
+                                    echo "<div class='alert alert-danger'>Fajl s s istim imenom vec postoji.</div>";
                                     $uploadOk = 0;
                                 }
-                                if($imageFileType!= "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif")
-                                //if(!in_array($_FILES["slika"]["type"],['image/png','image/jpg','image/jpeg','image/giff'])
-                                {
-                                    echo "<div class='alert alert-danger'>Slika nije jpg/jpeg/png/gif formata.</div>";
-                                    $uploadOk = 0;
-                                }
-                            } else {
-                                echo "<div class='alert alert-danger'>Niste uneli sliku</div>";
-                                $uploadOk = 0;
-                            }
 
-                            if ($uploadOk != 0 ) 
-                            {
-                                if (move_uploaded_file($_FILES["slika"]["tmp_name"], $target_file)) {
-                                    echo "<div class='alert alert-success'>Slika". htmlspecialchars(basename($_FILES["slika"]["name"])). " je uploadovana.</div>";
+                                
+                                // provera da li je slika, da li prelazi 5MB i da li je zeljenog formata pristupom preko $_FILES['slika']
+                                $check = getimagesize($_FILES["slika"]["tmp_name"]);
+                                if ($check !== false) 
+                                {
+                                    if ($_FILES["slika"]["size"] > 5000000) 
+                                    {
+                                        echo "<div class='alert alert-danger'>Slika prelazi 5MB.</div>";
+                                        $uploadOk = 0;
+                                    }
+                                    if($imageFileType!= "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif")
+                                    //if(!in_array($_FILES["slika"]["type"],['image/png','image/jpg','image/jpeg','image/giff'])
+                                    {
+                                        echo "<div class='alert alert-danger'>Slika nije jpg/jpeg/png/gif formata.</div>";
+                                        $uploadOk = 0;
+                                    }
                                 } else {
-                                    echo "<div class='alert alert-danger'>Sorry, your file was not uploaded.</div>";
+                                    echo "<div class='alert alert-danger'>Niste uneli sliku</div>";
+                                    $uploadOk = 0;
                                 }
-                            } 
 
+                                if ($uploadOk != 0 ) 
+                                {
+                                    if (move_uploaded_file($_FILES["slika"]["tmp_name"], $target_file)) {
+                                        echo "<div class='alert alert-success'>Slika". htmlspecialchars(basename($_FILES["slika"]["name"])). " je uploadovana.</div>";
+                                    } else {
+                                        echo "<div class='alert alert-danger'>Sorry, your file was not uploaded.</div>";
+                                    }
+                                } 
+                                
+                            }
+                            else
+                                echo "<div class='alert alert-danger'>Unesite sliku</div>";
+
+                            
+        
                         }
                         else
                             echo "<div class='alert alert-danger'>Unesite novo ime vase slike</div>";
@@ -148,6 +160,9 @@
             </div>
 
         </div>
+
+
+
     </div>
 
     <script src="script/script.js"></script>
