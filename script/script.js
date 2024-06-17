@@ -9,11 +9,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         upozorenja.innerHTML="";
     });
     
-    const fileInput = document.getElementById('slika');
-    fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        handleFile(file);
-    });
 
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -34,7 +29,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
         e.stopPropagation();
         dropZone.classList.remove('dragover');
-        dropZoneText.textContent = '';
+        dropZoneText.textContent = '... ili prevucite fajl ovde';
 
         const files = e.dataTransfer.files;
         if (files.length > 0) {
@@ -42,42 +37,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
             handleFile(file);
         }
     });
-    
-
-
-    // NISTA DOLE NE RADI
-
-
 
     function handleFile(file) {
         const validExtensions = ['image/jpeg', 'image/png', 'image/jpg', 'image/tiff'];
         preview.innerHTML = ''; // Očisti prethodni prikaz ako postoji
-    
-        if (validExtensions.includes(file.type)) 
-        {
 
-            if(file.size<=5-1024*1024)
-            {
+        if (validExtensions.includes(file.type)) {
+            if (file.size <= 5 * 1024 * 1024) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const img = document.createElement('img');
                     img.src = e.target.result;
-                    img.className = 'img-fluid'; 
+                    img.className = 'img-fluid'; // Bootstrap 5 class for responsive images
                     preview.appendChild(img);
-                }
-            reader.readAsDataURL(file);
-            
-            }
-            else
-            {
+                };
+                reader.readAsDataURL(file);
+            } else {
                 dropZoneText.textContent = 'Slika prelazi 5MB.';
             }
-            
-        } 
-        else {
+        } else {
             dropZoneText.textContent = 'Slika nije jpg/jpeg/png/gif formata.';
         }
     }
 
-    
+    const fileInput = document.getElementById('slika');
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0]; // Uzmi samo prvi fajl
+        handleFile(file);
+    });
 });
+    

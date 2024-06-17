@@ -10,10 +10,15 @@
 </head>
 <body>
     <div>
+
+        
+        <!-- HERO -->
         <div class="container-fluid bg-primary text-center text-light p-5">
+
             <div class="mb-5">
                 <h1 class="display-1">Galerija slika</h1>
             </div>
+
             <div class="text-light mt-5">
                 <nav class="navbar navbar-expand-sm justify-content-center">
                     <ul class="nav-tabs navbar-nav">
@@ -26,7 +31,12 @@
                     </ul>
                 </nav>
             </div>
+
         </div>
+
+
+
+        <!-- BODY -->
         <div class="container-sm my-5 py-5 shadow-lg text-center">
 
             <div class="">
@@ -74,6 +84,7 @@
                     </button>
 
                 </div>
+                
             </div>
 
         </div>

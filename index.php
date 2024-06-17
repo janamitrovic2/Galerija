@@ -59,9 +59,11 @@
                 </div>
 
                 <div class="my-4">
+
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
 
                         <div class="py-4">
+
                             <div class="row justify-content-center mb-4">
                                 <div class="col-md-5 col-12">
                                     <input class="form-control" type="file" name="slika" id="slika" placeholder="Izaberite fajl...">
@@ -69,10 +71,11 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-md-5 col-12 drop-zone p-3" id="drop-zone">
-                                    <span>... ili prevucite fajl ovde</span>
+                                    <span id="dropZoneText">... ili prevucite fajl ovde</span>
                                     <div class="preview" id="preview"></div>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="mb-4">
@@ -89,6 +92,7 @@
                         </div>
 
                     </form>
+                    
                 </div>
 
                 <div class="" id="upozorenja">
