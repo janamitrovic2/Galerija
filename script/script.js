@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     const fileInput = document.getElementById('slika');
     fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0]; // Uzmi samo prvi fajl
+        const file = e.target.files[0];
         handleFile(file);
     });
 
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // NISTA DOLE NE RADI
 
-    
+
 
     function handleFile(file) {
         const validExtensions = ['image/jpeg', 'image/png', 'image/jpg', 'image/tiff'];

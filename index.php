@@ -39,7 +39,7 @@
                             <a class="nav-link text-light" href="#">Pocetna</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="galerija.php">Galerija</a>
+                            <a class="nav-link text-light" href="pages/galerija.php">Galerija</a>
                         </li>
                     </ul>
                 </nav>
@@ -50,7 +50,7 @@
 
 
         <!-- BODY -->
-        <div class="container-sm my-5 py-5 border">
+        <div class="container-sm my-5 py-5 shadow-lg">
 
             <div class="text-center">
 
@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                                <div class="col-md-5 col-12 drop-zone text-center p-3" id="drop-zone">
+                                <div class="col-md-5 col-12 drop-zone p-3" id="drop-zone">
                                     <span>... ili prevucite fajl ovde</span>
                                     <div class="preview" id="preview"></div>
                                 </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="../styles/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Galerija slika</title>
 </head>
@@ -27,39 +27,55 @@
                 </nav>
             </div>
         </div>
-        <div class="container-sm my-5 py-5 border text-center">
+        <div class="container-sm my-5 py-5 shadow-lg text-center">
+
             <div class="">
                 <h1>Galerija uploadovanih slika</h1>
             </div>
-            <div class="">
+
+            <div class="my-4 py-4">
+
+                <?php
+                    $image_files = glob("../uploads/*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+                    if(count($image_files)==0)
+                    {
+                        echo "<div class=''>Nema uploadovanih slika.</div>";
+                    }
+                ?>
+
                 <div id="galerija" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <?php
-                        $image_files = glob("uploads/*.{jpg,jpeg,png,gif}", GLOB_BRACE);
-                        foreach ($image_files as $index => $image) {
-                            echo '<button type="button" data-bs-target="#galerija" data-bs-slide-to="' . $index . '" ' . ($index === 0 ? 'class="active"' : '') . '></button>';
-                        }
+                        
+                            $image_files = glob("../uploads/*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+                            foreach ($image_files as $index => $image) {
+                                echo '<button type="button" data-bs-target="#galerija" data-bs-slide-to="' . $index . '" ' . ($index === 0 ? 'class="active"' : '') . '></button>';
+                            }
+                            
                         ?>
                     </div>
-                    <div class="carousel-inner">
+
+                    <div class="carousel-inner shadow-sm " style="background-color:#F8F8FF">
                         <?php
-                        $active = true;
-                        foreach ($image_files as $image) {
-                            echo '<div class="carousel-item ' . ($active ? 'active' : '') . '">';
-                            echo '<img src="' . $image . '" class="d-block w-100" alt="Image">';
-                            echo '</div>';
-                            $active = false;
-                        }
+                            for($i = 0;$i<count($image_files);$i++) 
+                            {
+                                echo '<div class="carousel-item ' . ( $i==0 ? 'active' : '') . '">';
+                                echo '<img src="' . $image_files[$i] . '" class="d-block mx-auto" height="700px"alt="Image">';
+                                echo '</div>';
+                            }
                         ?>
                     </div>
+
                     <button class="carousel-control-prev" type="button" data-bs-target="#galerija" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon"></span>
                     </button>
                     <button class="carousel-control-next" type="button" data-bs-target="#galerija" data-bs-slide="next">
                         <span class="carousel-control-next-icon"></span>
                     </button>
+
                 </div>
             </div>
+
         </div>
     </div>
 </body>
